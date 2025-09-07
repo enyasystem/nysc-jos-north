@@ -2,8 +2,59 @@ import { Users, Calendar, Book, Trophy, Shield, FolderSync, Smartphone } from "l
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import { useCallback } from "react";
+import type { Engine } from "tsparticles-engine";
 
 export default function Home() {
+  // Particle options for a lively, modern effect
+  const particlesInit = useCallback((engine: Engine) => {
+    loadFull(engine);
+  }, []);
+
+  const particlesOptions = {
+    fullScreen: { enable: false },
+    background: { color: "transparent" },
+    particles: {
+      number: { value: 80, density: { enable: true, area: 800 } },
+      color: { value: ["#38bdf8", "#f472b6", "#facc15", "#a3e635", "#fff", "#818cf8"] },
+      shape: { type: ["circle", "triangle", "edge"] },
+      opacity: { value: 0.7, random: { enable: true, minimumValue: 0.3 } },
+      size: { value: 4, random: { enable: true, minimumValue: 1 } },
+      move: {
+        enable: true,
+        speed: 2.2,
+        direction: "none" as const,
+        outModes: { default: "out" },
+        random: true,
+        straight: false,
+        attract: { enable: false }
+      },
+      links: { enable: false },
+      twinkle: {
+        particles: {
+          enable: true,
+          color: "#fff",
+          frequency: 0.15,
+          opacity: 1
+        }
+      }
+    },
+    detectRetina: true,
+    interactivity: {
+      events: {
+        onHover: { enable: true, mode: ["repulse", "bubble"] },
+        resize: true
+      },
+      modes: {
+        repulse: { distance: 120, duration: 0.4 },
+        bubble: { distance: 180, size: 8, duration: 2, opacity: 0.8 },
+        grab: { distance: 0 }
+      },
+      parallax: { enable: true, force: 30, smooth: 10 }
+    }
+  };
   const stats = [
     {
       icon: Users,
@@ -48,29 +99,34 @@ export default function Home() {
   return (
     <div className="min-h-screen" data-testid="home-page">
       {/* Hero Section */}
-      <section className="gradient-bg text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center animate-fade-in">
-            <div className="mb-8">
-              <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-soft">
-                <Users className="w-12 h-12 text-white" />
+      <section className="relative gradient-bg text-white overflow-hidden">
+        {/* Animated Particles */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+          <Particles id="tsparticles-hero" init={particlesInit} options={particlesOptions} style={{ position: "absolute" }} />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 flex flex-col items-center justify-center z-10">
+          <div className="text-center animate-fade-in-up">
+            <div className="mb-10 flex flex-col items-center">
+              <div className="w-28 h-28 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce-slow shadow-2xl shadow-cyan-400/20">
+                <Users className="w-14 h-14 text-white drop-shadow-lg" />
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold mb-6" data-testid="hero-title">
-                NYSC Jos North
+              <h1 className="text-6xl md:text-8xl font-extrabold mb-6 tracking-tight drop-shadow-lg" data-testid="hero-title">
+                <span className="bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-yellow-300 bg-clip-text text-transparent animate-gradient-x">
+                  NYSC Jos North
+                </span>
               </h1>
-              <p className="text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto" data-testid="hero-description">
+              <p className="text-2xl md:text-3xl font-light mb-10 max-w-3xl mx-auto text-white/90 animate-fade-in" data-testid="hero-description">
                 Official Biodata Management Platform for National Youth Service Corps Jos North Local Government
               </p>
             </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <Link href="/events">
                 <Button 
                   size="lg"
-                  className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg px-8 py-4 hover-lift"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 text-xl px-10 py-5 rounded-full shadow-lg hover:scale-105 transition-transform duration-200"
                   data-testid="button-view-events"
                 >
-                  <Calendar className="w-5 h-5 mr-3" />
+                  <Calendar className="w-6 h-6 mr-3" />
                   View Events
                 </Button>
               </Link>
@@ -78,10 +134,10 @@ export default function Home() {
                 <Button 
                   variant="outline"
                   size="lg"
-                  className="bg-white/10 text-white border-white/30 hover:bg-white/20 text-lg px-8 py-4"
+                  className="bg-white/10 text-white border-white/30 hover:bg-white/20 text-xl px-10 py-5 rounded-full shadow-lg hover:scale-105 transition-transform duration-200"
                   data-testid="button-browse-resources"
                 >
-                  <Book className="w-5 h-5 mr-3" />
+                  <Book className="w-6 h-6 mr-3" />
                   Browse Resources
                 </Button>
               </Link>
