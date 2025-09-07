@@ -239,7 +239,7 @@ export default function ResourcesManagement() {
                     <FormItem>
                       <FormLabel>Description (Optional)</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Enter resource description" {...field} data-testid="input-resource-description" />
+                        <Textarea placeholder="Enter resource description" {...field} value={field.value || ""} data-testid="input-resource-description" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -305,7 +305,7 @@ export default function ResourcesManagement() {
                     <FormItem>
                       <FormLabel>File URL</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter file URL or upload path" {...field} data-testid="input-resource-file-url" />
+                        <Input placeholder="Enter file URL or upload path" {...field} value={field.value || ""} data-testid="input-resource-file-url" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -318,7 +318,7 @@ export default function ResourcesManagement() {
                     <FormItem>
                       <FormLabel>File Size (Optional)</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., 2.5 MB" {...field} data-testid="input-resource-file-size" />
+                        <Input placeholder="e.g., 2.5 MB" {...field} value={field.value || ""} data-testid="input-resource-file-size" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

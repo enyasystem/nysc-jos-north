@@ -342,7 +342,7 @@ export default function EventsManagement() {
                     <FormItem>
                       <FormLabel>Image URL (Optional)</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter image URL" {...field} data-testid="input-event-image" />
+                        <Input placeholder="Enter image URL" {...field} value={field.value || ""} data-testid="input-event-image" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

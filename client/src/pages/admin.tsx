@@ -3,6 +3,7 @@ import { Users, Calendar, Book, Settings, BarChart3, Plus, List } from "lucide-r
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DashboardAnalytics } from "@/components/dashboard-analytics";
 import ExcosManagement from "@/components/admin/excos-management";
 import DevelopersManagement from "@/components/admin/developers-management";
 import EventsManagement from "@/components/admin/events-management";
@@ -94,37 +95,23 @@ export default function Admin() {
         return (
           <div className="p-8" data-testid="admin-dashboard">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-foreground mb-2">Admin Dashboard</h1>
-              <p className="text-muted-foreground">Overview of NYSC Jos North portal activities</p>
+              <h1 className="text-3xl font-bold text-foreground mb-2 animate-fade-in">Admin Dashboard</h1>
+              <p className="text-muted-foreground">Real-time overview of NYSC Jos North portal activities</p>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {stats.map((stat) => (
-                <Card key={stat.title} className="overflow-hidden shadow-lg hover-lift" data-testid={`stat-card-${stat.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                  <CardContent className={`p-6 text-white ${stat.color}`}>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                        <stat.icon className="w-6 h-6" />
-                      </div>
-                    </div>
-                    <h3 className="text-3xl font-bold mb-2">{stat.value}</h3>
-                    <p className="text-white/80 text-sm">{stat.title}</p>
-                    <div className="mt-4 text-sm text-white/60">
-                      {stat.change}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {/* Premium Analytics Dashboard */}
+            <DashboardAnalytics className="mb-8" />
 
             {/* Management Sections Preview */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <Card className="p-6 shadow-lg" data-testid="quick-actions-card">
-                <h3 className="text-xl font-bold text-foreground mb-4">Quick Actions</h3>
+              <Card className="p-6 shadow-lg hover-lift border-0 glass-effect" data-testid="quick-actions-card">
+                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                  <div className="w-2 h-8 bg-primary rounded-full" />
+                  Quick Actions
+                </h3>
                 <div className="space-y-3">
                   <Button 
-                    className="w-full justify-start bg-primary text-primary-foreground hover:bg-primary/90"
+                    className="w-full justify-start btn-premium hover-lift"
                     onClick={() => setActiveSection("events")}
                     data-testid="quick-action-create-event"
                   >
@@ -133,7 +120,7 @@ export default function Admin() {
                   </Button>
                   <Button 
                     variant="outline"
-                    className="w-full justify-start"
+                    className="w-full justify-start hover-lift"
                     onClick={() => setActiveSection("resources")}
                     data-testid="quick-action-upload-resource"
                   >
@@ -142,7 +129,7 @@ export default function Admin() {
                   </Button>
                   <Button 
                     variant="outline"
-                    className="w-full justify-start"
+                    className="w-full justify-start hover-lift"
                     onClick={() => setActiveSection("excos")}
                     data-testid="quick-action-add-exco"
                   >
@@ -152,12 +139,15 @@ export default function Admin() {
                 </div>
               </Card>
 
-              <Card className="p-6 shadow-lg" data-testid="platform-management-card">
-                <h3 className="text-xl font-bold text-foreground mb-4">Platform Management</h3>
+              <Card className="p-6 shadow-lg hover-lift border-0 glass-effect" data-testid="platform-management-card">
+                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                  <div className="w-2 h-8 bg-secondary rounded-full" />
+                  Platform Management
+                </h3>
                 <div className="space-y-3">
                   <Button 
                     variant="outline"
-                    className="w-full justify-start"
+                    className="w-full justify-start hover-lift"
                     onClick={() => setActiveSection("ui-settings")}
                     data-testid="platform-action-customize-ui"
                   >
@@ -166,7 +156,7 @@ export default function Admin() {
                   </Button>
                   <Button 
                     variant="outline"
-                    className="w-full justify-start"
+                    className="w-full justify-start hover-lift"
                     onClick={() => setActiveSection("developers")}
                     data-testid="platform-action-manage-team"
                   >
@@ -175,7 +165,7 @@ export default function Admin() {
                   </Button>
                   <Button 
                     variant="outline"
-                    className="w-full justify-start"
+                    className="w-full justify-start hover-lift"
                     onClick={() => setActiveSection("resources")}
                     data-testid="platform-action-manage-resources"
                   >

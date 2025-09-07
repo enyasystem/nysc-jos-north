@@ -257,7 +257,8 @@ export default function UiSettings() {
                         <FormControl>
                           <Input 
                             placeholder="Enter logo URL" 
-                            {...field} 
+                            {...field}
+                            value={field.value || ""}
                             data-testid="input-logo-url"
                           />
                         </FormControl>

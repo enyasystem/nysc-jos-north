@@ -235,7 +235,10 @@ export class MemStorage implements IStorage {
   async createExco(insertExco: InsertExco): Promise<Exco> {
     const id = randomUUID();
     const exco: Exco = { 
-      ...insertExco, 
+      ...insertExco,
+      phone: insertExco.phone || null,
+      imageUrl: insertExco.imageUrl || null,
+      isActive: insertExco.isActive ?? true,
       id, 
       createdAt: new Date() 
     };
@@ -268,7 +271,10 @@ export class MemStorage implements IStorage {
   async createDeveloper(insertDeveloper: InsertDeveloper): Promise<Developer> {
     const id = randomUUID();
     const developer: Developer = { 
-      ...insertDeveloper, 
+      ...insertDeveloper,
+      status: insertDeveloper.status || "active",
+      imageUrl: insertDeveloper.imageUrl || null,
+      skills: insertDeveloper.skills || null,
       id, 
       createdAt: new Date() 
     };
@@ -301,7 +307,9 @@ export class MemStorage implements IStorage {
   async createEvent(insertEvent: InsertEvent): Promise<Event> {
     const id = randomUUID();
     const event: Event = { 
-      ...insertEvent, 
+      ...insertEvent,
+      status: insertEvent.status || "draft",
+      imageUrl: insertEvent.imageUrl || null,
       id, 
       createdAt: new Date() 
     };
@@ -334,7 +342,10 @@ export class MemStorage implements IStorage {
   async createResource(insertResource: InsertResource): Promise<Resource> {
     const id = randomUUID();
     const resource: Resource = { 
-      ...insertResource, 
+      ...insertResource,
+      description: insertResource.description || null,
+      fileUrl: insertResource.fileUrl || null,
+      fileSize: insertResource.fileSize || null,
       id, 
       createdAt: new Date() 
     };

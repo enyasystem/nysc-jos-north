@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Flag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 export default function Navigation() {
@@ -37,7 +38,7 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href} data-testid={`nav-link-${link.label.toLowerCase()}`}>
                 <span
@@ -50,8 +51,9 @@ export default function Navigation() {
                 </span>
               </Link>
             ))}
+            <ThemeToggle />
             <Link href="/admin" data-testid="admin-link">
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 hover-lift">
                 Admin
               </Button>
             </Link>
