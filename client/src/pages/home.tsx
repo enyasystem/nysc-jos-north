@@ -7,7 +7,8 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { useCallback } from "react";
 import type { Engine } from "tsparticles-engine";
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import * as THREE from 'three';
 import { OrbitControls, Environment, ContactShadows, MeshTransmissionMaterial } from '@react-three/drei';
 // Postprocessing removed temporarily due to runtime error in dev environment
 // import { EffectComposer, Bloom, DepthOfField } from '@react-three/postprocessing';
@@ -20,6 +21,7 @@ import { Suspense } from 'react';
 // --- 3D Scene Component for Realism ---
 function Scene({ realistic = false }: { realistic?: boolean }) {
   // Rotating globe refs
+  const globeGroupRef = useRef<Group | null>(null);
   const globeRef = useRef<Mesh | null>(null);
   const markerRef = useRef<Mesh | null>(null);
 
@@ -34,13 +36,17 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
   };
 
   // Example: Jos (approx) latitude/longitude
-  const josPos = useMemo(() => latLonToCartesian(9.8965, 8.8583, 1.75), []);
+  const globeRadius = 1.75;
+  const josPos = useMemo(() => latLonToCartesian(9.8965, 8.8583, globeRadius), [globeRadius]);
+
+  // Load an Earth texture (falls back to a public CDN)
+  const earthTexture = useLoader(THREE.TextureLoader, 'https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg');
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
-    // Gentle continuous rotation
-    if (globeRef.current) {
-      globeRef.current.rotation.y = t * (realistic ? 0.12 : 0.06);
+    // Gentle continuous rotation of the whole globe group so markers move with it
+    if (globeGroupRef.current) {
+      globeGroupRef.current.rotation.y = t * (realistic ? 0.12 : 0.06);
     }
     // Pulse marker slightly
     if (markerRef.current) {
@@ -54,20 +60,15 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
       <directionalLight position={[5, 5, 5]} intensity={0.9} />
   {/* Camera shake removed to avoid view drifting in smaller hero placements */}
       {/* Rotating globe with a subtle cloud layer and a marker for Jos North */}
-      <group>
+      <group ref={globeGroupRef}>
         <mesh ref={globeRef} castShadow receiveShadow>
-          <sphereGeometry args={[1.7, 64, 64]} />
-          <meshPhysicalMaterial
-            color={realistic ? '#2b6cb0' : '#3b82f6'}
-            roughness={0.8}
-            metalness={0.05}
-            clearcoat={0.05}
-          />
+          <sphereGeometry args={[globeRadius, 64, 64]} />
+          <meshStandardMaterial map={earthTexture} roughness={0.9} metalness={0.02} />
         </mesh>
 
         {/* Cloud layer */}
         <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[1.72, 64, 64]} />
+          <sphereGeometry args={[globeRadius + 0.02, 64, 64]} />
           <meshStandardMaterial color="#ffffff" opacity={0.06} transparent />
         </mesh>
 
