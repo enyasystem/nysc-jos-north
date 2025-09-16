@@ -51,6 +51,34 @@
   --spacing: 0.25rem;
 }
 
+/* Admin global palette overrides (deep-sea-green) */
+:root {
+  --admin-deep-sea: #014f43;
+  --admin-deep-sea-700: #013f36;
+  --admin-accent: #06b6d4; /* cyan accent preserved */
+  --admin-emerald: #10b981;
+  --admin-foreground: #ffffff;
+  --admin-muted: rgba(255,255,255,0.85);
+  --admin-card: rgba(255,255,255,0.04);
+}
+
+/* Utility token overrides to apply the admin palette across the site */
+.bg-accent { background-color: var(--admin-deep-sea) !important; }
+.text-accent { color: var(--admin-deep-sea) !important; }
+.bg-primary { background-color: var(--admin-emerald) !important; }
+.text-primary { color: var(--admin-emerald) !important; }
+.text-foreground { color: var(--admin-foreground) !important; }
+.bg-background { background-color: var(--admin-deep-sea-700) !important; }
+.bg-muted { background-color: var(--admin-card) !important; }
+.text-muted-foreground { color: var(--admin-muted) !important; }
+.border-accent { border-color: var(--admin-deep-sea) !important; }
+
+/* Buttons (accent) */
+.btn-accent { background-image: linear-gradient(90deg, var(--admin-deep-sea), var(--admin-emerald)); color: white; }
+
+/* Ensure cards and panels fit in the new palette */
+.card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); }
+
 .dark {
   --background: hsl(0 0% 0%);
   --foreground: hsl(200 6.6667% 91.1765%);

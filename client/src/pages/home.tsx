@@ -478,8 +478,8 @@ export default function Home() {
           </div>
         </div>
       )}
-      {/* Hero Section */}
-      <section className="relative gradient-bg text-white overflow-hidden">
+  {/* Hero Section */}
+  <section className="relative text-white overflow-hidden" style={{ background: 'linear-gradient(180deg, var(--admin-deep-sea), rgba(1,79,67,0.88))' }}>
         {/* Animated Particles */}
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
           <Particles id="tsparticles-hero" init={particlesInit} options={particlesOptions as any} style={{ position: "absolute" }} />
@@ -511,21 +511,21 @@ export default function Home() {
           {/* Hero text left */}
           <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left animate-fade-in-up z-10">
             <div className="mb-10 flex flex-col items-center md:items-start">
-              <div className="w-28 h-28 bg-white/20 rounded-full flex items-center justify-center mb-8 animate-bounce-slow shadow-2xl shadow-cyan-400/20">
-                <Users className="w-14 h-14 text-white drop-shadow-lg" />
+              <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6 animate-bounce-slow shadow-lg">
+                <Users className="w-12 h-12 text-white/95" />
               </div>
-              <h1 className="text-6xl md:text-8xl font-extrabold mb-6 tracking-tight drop-shadow-lg" data-testid="hero-title">
+              <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight drop-shadow-sm" data-testid="hero-title">
                 <TypewriterText text="NYSC Jos North" className="text-white" />
               </h1>
-              <p className="text-2xl md:text-3xl font-light mb-10 max-w-3xl mx-auto md:mx-0 text-white/90 animate-fade-in" data-testid="hero-description">
-                Official Biodata Management Platform for National Youth Service Corps Jos North Local Government
+              <p className="text-lg md:text-xl font-medium mb-8 max-w-2xl mx-auto md:mx-0 text-white/90 animate-fade-in" data-testid="hero-description">
+                Official biodata management platform for NYSC Jos North — register, find resources, and join events.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start items-center animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <Link href="/events">
                 <Button 
                   size="lg"
-                  className="bg-accent text-accent-foreground hover:bg-accent/90 text-xl px-10 py-5 rounded-full shadow-lg hover:scale-105 transition-transform duration-200"
+      className="btn-accent text-white hover:opacity-95 text-lg px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-200"
                   data-testid="button-view-events"
                 >
                   <Calendar className="w-6 h-6 mr-3" />
@@ -536,7 +536,7 @@ export default function Home() {
                 <Button 
                   variant="outline"
                   size="lg"
-                  className="bg-white/10 text-white border-white/30 hover:bg-white/20 text-xl px-10 py-5 rounded-full shadow-lg hover:scale-105 transition-transform duration-200"
+      className="bg-white/10 text-white border-white/20 hover:bg-white/20 text-lg px-8 py-3 rounded-full shadow hover:scale-105 transition-transform duration-200"
                   data-testid="button-browse-resources"
                 >
                   <Book className="w-6 h-6 mr-3" />
@@ -581,11 +581,11 @@ export default function Home() {
                 style={{ animationDelay: `${index * 0.1}s` }}
                 data-testid={`stat-${stat.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <stat.icon className="w-8 h-8 text-primary" />
+                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <stat.icon className="w-7 h-7 text-primary" />
                 </div>
-                <h3 className="text-3xl font-bold text-foreground mb-2">{stat.value}</h3>
-                <p className="text-muted-foreground">{stat.label}</p>
+                <h3 className="text-2xl font-semibold text-foreground mb-1">{stat.value}</h3>
+                <p className="text-sm text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -602,21 +602,65 @@ export default function Home() {
             Our platform serves as the central hub for all corps members serving in Jos North Local Government Area. 
             Stay connected, informed, and engaged with our comprehensive biodata management system.
           </p>
-          <Card className="p-8 shadow-lg hover-lift">
-            <CardContent className="p-0">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {features.map((feature) => (
-                  <div key={feature.title} className="text-center" data-testid={`feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}`}> 
-                    <feature.icon className="w-12 h-12 text-primary mx-auto mb-4" />
-                    <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {features.map((feature, i) => (
+              <Card key={feature.title} className="p-4 h-full card transform transition-shadow hover:shadow-lg" style={{ animationName: 'fadeUp', animationDuration: '420ms', animationDelay: `${i * 80}ms`, animationFillMode: 'both' }}>
+                <CardContent className="p-4 text-center">
+                  <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center bg-primary/10">
+                    <feature.icon className="w-6 h-6 text-primary" />
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  <h3 className="font-semibold text-foreground mb-1 text-lg">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
+
+      {/* Dev Section (Testimonials) */}
+      <section className="py-20 bg-gradient-to-b from-white/6 to-transparent">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8">Dev Section</h2>
+          <p className="text-muted-foreground mb-10 max-w-2xl mx-auto">Real stories from members who used our platform to stay organized and engaged.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            {[
+              { name: 'Amina', role: 'Corps Member', quote: 'This platform made registration and resource access effortless.' },
+              { name: 'Emeka', role: 'Exco', quote: 'Real-time updates helped us run events smoothly.' },
+              { name: 'Fatima', role: 'Volunteer', quote: 'Clean UI and fast performance — exactly what we needed.' },
+            ].map((t, i) => (
+              <Card
+                key={t.name}
+                className="p-6 shadow-sm h-full card"
+                style={{ animationDelay: `${i * 80}ms`, animationName: 'fadeUp', animationDuration: '420ms', animationFillMode: 'both' }}
+              >
+                <CardContent className="bg-transparent p-0">
+                  <div className="text-4xl text-foreground/80 mb-2">“</div>
+                  <p className="text-foreground italic mb-4 text-base">{t.quote}</p>
+                  <footer className="text-sm text-muted-foreground font-medium">— {t.name}, <span className="text-foreground/80">{t.role}</span></footer>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h3 className="text-3xl font-bold text-foreground mb-4">Ready to get started?</h3>
+          <p className="text-muted-foreground mb-8">Create an account, browse resources, and join events — all in one place.</p>
+          <div className="flex justify-center">
+            <Link href="/register">
+              <Button size="lg" className="px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-400 shadow-lg">Create Account</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Animations: keyframes used by testimonials */}
+      <style>{`@keyframes fadeUp { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: translateY(0) } }`}</style>
     </div>
   );
 }

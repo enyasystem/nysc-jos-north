@@ -23,6 +23,7 @@ export default function Navigation() {
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-border"
+      style={{ background: 'linear-gradient(180deg, rgba(1,79,67,0.95), rgba(1,79,67,0.88))' }}
       data-testid="main-navigation"
       aria-label="Main navigation"
     >
