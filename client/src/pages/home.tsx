@@ -569,6 +569,31 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Events Section */}
+      <section className="py-12 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h3 className="text-2xl font-bold text-foreground mb-4">Upcoming Events</h3>
+          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">Join the latest events organised by NYSC Jos North.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { title: 'Orientation Workshop', date: 'Sep 28, 2025', href: '/events' },
+              { title: 'Health Outreach', date: 'Oct 10, 2025', href: '/events' },
+              { title: 'Skills Training', date: 'Nov 5, 2025', href: '/events' }
+            ].map((ev) => (
+              <Card key={ev.title} className="p-4 h-full card">
+                <CardContent className="p-4">
+                  <h4 className="font-semibold text-foreground mb-1">{ev.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-4">{ev.date}</p>
+                  <div className="text-right">
+                    <Link href={ev.href} className="text-sm text-foreground/80 hover:text-foreground">Details</Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section className="bg-background py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
