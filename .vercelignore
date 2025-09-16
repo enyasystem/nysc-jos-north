@@ -1,0 +1,8 @@
+# Ignore server bundle and server source so Vercel static builds don't serve them
+dist/server/
+dist/index.js
+server/
+*.log
+node_modules/
+/.env
+/.env.*
