@@ -67,6 +67,9 @@ export default {
           gold: "#FFD700",
           white: "#FFFFFF"
         },
+        admin: {
+          "deep-sea": "#014f43",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
