@@ -69,15 +69,17 @@ export async function setupVite(app: Express, server: Server) {
 
 export function serveStatic(app: Express) {
   // the client build is emitted to ../dist/public by the vite build config
+  // ensure we point specifically at the public folder inside the dist output
   const distPath = path.resolve(import.meta.dirname, "..", "dist", "public");
 
   if (!fs.existsSync(distPath)) {
+    // provide a helpful hint if the folder is missing
     throw new Error(
-      `Could not find the build directory: ${distPath}. Run 'npm run build' from project root to build the client`,
+      `Could not find the client build directory: ${distPath}. Run 'npm run build' from project root to build the client (this will create dist/public).`,
     );
   }
 
-  // serve static client build
+  // serve static client build (only the client assets in dist/public)
   app.use(express.static(distPath));
 
   // fall back to index.html for client-side routing
