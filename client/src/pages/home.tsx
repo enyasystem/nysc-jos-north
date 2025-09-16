@@ -569,6 +569,14 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="py-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Link href="/events">
+            <Button size="md" className="px-5 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-400 text-white shadow">View more events</Button>
+          </Link>
+        </div>
+      </section>
+
       {/* Events Section */}
       <section className="py-12 bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
