@@ -618,27 +618,61 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Dev Section (Testimonials) */}
+      {/* Dev Section: developer bios and contact links */}
       <section className="py-20 bg-gradient-to-b from-white/6 to-transparent">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8">Dev Section</h2>
-          <p className="text-muted-foreground mb-10 max-w-2xl mx-auto">Real stories from members who used our platform to stay organized and engaged.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Meet the Dev Team</h2>
+          <p className="text-muted-foreground mb-10 max-w-2xl mx-auto">Short bios and contact links for the developers who built and maintain this platform.</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             {[
-              { name: 'Amina', role: 'Corps Member', quote: 'This platform made registration and resource access effortless.' },
-              { name: 'Emeka', role: 'Exco', quote: 'Real-time updates helped us run events smoothly.' },
-              { name: 'Fatima', role: 'Volunteer', quote: 'Clean UI and fast performance — exactly what we needed.' },
-            ].map((t, i) => (
+              {
+                name: 'Ada',
+                role: 'Frontend Engineer',
+                bio: 'Builds the user interface and ensures responsive, accessible experiences. Focus: React, TypeScript, and UX polish.',
+                github: 'https://github.com/ada-dev'
+              },
+              {
+                name: 'Chinedu',
+                role: 'Backend Engineer',
+                bio: 'Designs APIs, manages data models, and keeps the server reliable. Focus: Node, TypeScript, and database schema.',
+                github: 'https://github.com/chinedu-dev'
+              },
+              {
+                name: 'Sade',
+                role: 'Fullstack Developer',
+                bio: 'Bridges frontend and backend work, handling integration and deployment. Focus: DevOps, CI, and end-to-end testing.',
+                github: 'https://github.com/sade-dev'
+              }
+            ].map((dev, i) => (
               <Card
-                key={t.name}
+                key={dev.name}
                 className="p-6 shadow-sm h-full card"
                 style={{ animationDelay: `${i * 80}ms`, animationName: 'fadeUp', animationDuration: '420ms', animationFillMode: 'both' }}
               >
-                <CardContent className="bg-transparent p-0">
-                  <div className="text-4xl text-foreground/80 mb-2">“</div>
-                  <p className="text-foreground italic mb-4 text-base">{t.quote}</p>
-                  <footer className="text-sm text-muted-foreground font-medium">— {t.name}, <span className="text-foreground/80">{t.role}</span></footer>
+                <CardContent className="bg-transparent p-0 flex flex-col h-full justify-between">
+                  <div>
+                    <div className="w-14 h-14 rounded-full bg-primary/10 text-foreground/90 flex items-center justify-center font-semibold text-lg mb-4">{dev.name.charAt(0)}</div>
+                    <h3 className="text-lg font-semibold text-foreground mb-1">{dev.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-3">{dev.role}</p>
+                    <p className="text-sm text-foreground/90 mb-4">{dev.bio}</p>
+                  </div>
+                  <div className="mt-4 flex items-center justify-between">
+                    <a
+                      href={dev.github}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="text-sm text-foreground/80 hover:text-foreground transition-colors"
+                    >
+                      View GitHub
+                    </a>
+                    <a
+                      href={`mailto:${dev.name.toLowerCase()}@example.com`}
+                      className="text-sm text-muted-foreground hover:text-foreground/90 transition-colors"
+                    >
+                      Contact
+                    </a>
+                  </div>
                 </CardContent>
               </Card>
             ))}
