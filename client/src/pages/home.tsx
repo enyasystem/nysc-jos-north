@@ -9,7 +9,6 @@ import { useCallback } from "react";
 import type { Engine } from "tsparticles-engine";
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import type { Texture } from 'three';
 import { OrbitControls, Environment, ContactShadows, MeshTransmissionMaterial } from '@react-three/drei';
 // Postprocessing removed temporarily due to runtime error in dev environment
 // import { EffectComposer, Bloom, DepthOfField } from '@react-three/postprocessing';
@@ -46,6 +45,8 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
   const [normalMap, setNormalMap] = useState<any | null>(null);
   const [bumpMap, setBumpMap] = useState<any | null>(null);
   const [specularMap, setSpecularMap] = useState<any | null>(null);
+  const [cloudsMap, setCloudsMap] = useState<any | null>(null);
+  const cloudRef = useRef<Mesh | null>(null);
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
@@ -53,31 +54,102 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
       earth: 'https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg',
       normal: 'https://threejs.org/examples/textures/earth_normalmap_2048.jpg',
       bump: 'https://threejs.org/examples/textures/earthbump1k.jpg',
-      spec: 'https://threejs.org/examples/textures/earthspec1k.jpg',
+  spec: 'https://threejs.org/examples/textures/earthspec1k.jpg',
+  clouds: 'https://threejs.org/examples/textures/earth_clouds_1024.png',
+    };
+
+    // helper: create a simple canvas-based fallback Earth-like texture when external loads fail
+    const createFallbackEarthTexture = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 2048;
+        canvas.height = 1024;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return null;
+        // sky/ocean
+        const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        grad.addColorStop(0, '#2b6fb3');
+        grad.addColorStop(1, '#0b3d66');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // simple continents as green blobs
+        ctx.fillStyle = '#3a8a3a';
+        for (let i = 0; i < 10; i++) {
+          const x = Math.random() * canvas.width;
+          const y = Math.random() * canvas.height;
+          const w = 160 + Math.random() * 260;
+          const h = 80 + Math.random() * 160;
+          ctx.beginPath();
+          ctx.ellipse(x, y, w, h, Math.random() * Math.PI, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        // clouds
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        for (let i = 0; i < 30; i++) {
+          const x = Math.random() * canvas.width;
+          const y = Math.random() * canvas.height;
+          const r = 8 + Math.random() * 60;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        const texture = new THREE.CanvasTexture(canvas);
+        try { texture.encoding = THREE.sRGBEncoding; texture.needsUpdate = true; } catch (e) { }
+        return texture;
+      } catch (e) {
+        console.warn('Failed to create fallback earth texture', e);
+        return null;
+      }
     };
 
     loader.load(urls.earth,
-      (tex: Texture) => setEarthTexture(tex),
+      (tex: THREE.Texture) => {
+        try { tex.encoding = THREE.sRGBEncoding; tex.needsUpdate = true; } catch (e) { /* ignore when not applicable */ }
+        setEarthTexture(tex);
+      },
       undefined,
-      (err: any) => { console.warn('Failed to load earth texture', err); setEarthTexture(null); }
+      (err: any) => {
+        console.warn('Failed to load earth texture', err);
+        const fallback = createFallbackEarthTexture();
+        if (fallback) setEarthTexture(fallback);
+        else setEarthTexture(null);
+      }
     );
 
     loader.load(urls.normal,
-      (tex: Texture) => setNormalMap(tex),
+      (tex: THREE.Texture) => {
+        try { tex.needsUpdate = true; } catch (e) { }
+        setNormalMap(tex);
+      },
       undefined,
       (err: any) => { console.warn('Failed to load normal map', err); setNormalMap(null); }
     );
 
     loader.load(urls.bump,
-      (tex: Texture) => setBumpMap(tex),
+      (tex: THREE.Texture) => {
+        try { tex.needsUpdate = true; } catch (e) { }
+        setBumpMap(tex);
+      },
       undefined,
       (err: any) => { console.warn('Failed to load bump map', err); setBumpMap(null); }
     );
 
     loader.load(urls.spec,
-      (tex: Texture) => setSpecularMap(tex),
+      (tex: THREE.Texture) => {
+        try { tex.needsUpdate = true; } catch (e) { }
+        setSpecularMap(tex);
+      },
       undefined,
       (err: any) => { console.warn('Failed to load specular map', err); setSpecularMap(null); }
+    );
+
+    loader.load(urls.clouds,
+      (tex: THREE.Texture) => {
+        try { tex.encoding = THREE.sRGBEncoding; tex.needsUpdate = true; } catch (e) { }
+        setCloudsMap(tex);
+      },
+      undefined,
+      (err: any) => { console.warn('Failed to load clouds map', err); setCloudsMap(null); }
     );
 
     // Load a premium SVG icon as data URL and apply it to the plane mesh's material
@@ -102,8 +174,9 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
         </svg>
       `);
       const svgDataUrl = `data:image/svg+xml;charset=utf-8,${badgeSvg}`;
-      loader.load(svgDataUrl, (tex: Texture) => {
-        setEarthTexture((prev) => prev || tex);
+      loader.load(svgDataUrl, (tex: THREE.Texture) => {
+        try { tex.encoding = THREE.sRGBEncoding; tex.needsUpdate = true; } catch (e) { }
+        setEarthTexture((prev: any) => prev || tex);
       }, undefined, (err: any) => console.warn('Failed to load badge SVG texture', err));
     } catch (e) {
       console.warn('Failed to create SVG data URL', e);
@@ -114,7 +187,10 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
     const t = clock.getElapsedTime();
     // Gentle continuous rotation of the whole globe group so markers move with it
     if (globeGroupRef.current) {
-      globeGroupRef.current.rotation.y = t * (realistic ? 0.12 : 0.06);
+      // Slightly faster when realistic to match screenshot feel
+      globeGroupRef.current.rotation.y = t * (realistic ? 0.18 : 0.08);
+    } else if (globeRef.current) {
+      globeRef.current.rotation.y = t * (realistic ? 0.18 : 0.08);
     }
     // Pulse marker slightly
     if (markerRef.current) {
@@ -125,6 +201,10 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
     if (globeRef.current) {
       const bob = Math.sin(t * 1.2) * 0.06;
       globeRef.current.position.y = bob;
+    }
+    // Rotate clouds slightly faster for subtle movement
+    if (cloudRef.current) {
+      cloudRef.current.rotation.y = t * (realistic ? 0.28 : 0.12);
     }
   });
   return (
@@ -137,20 +217,45 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
         {/* 3D textured globe */}
         <mesh ref={globeRef} rotation={[0, 0, 0]} castShadow receiveShadow>
           <sphereGeometry args={[globeRadius, 64, 64]} />
-          {/* Prefer Phong for specular map support; fall back to basic props when maps are absent */}
-          <meshPhongMaterial
+          {/* Use PBR-style standard material for more natural lighting/reflections */}
+          <meshStandardMaterial
             {...(earthTexture ? { map: earthTexture } : {})}
             {...(normalMap ? { normalMap } : {})}
             {...(bumpMap ? { bumpMap } : {})}
-            {...(specularMap ? { specularMap } : {})}
-            shininess={18}
+            // Use roughness/metalness to simulate ocean specular and land roughness
+            roughness={0.6}
+            metalness={0.05}
+            envMapIntensity={0.8}
+            // slightly emissive to keep colors vivid against dark gradient
+            emissive={new THREE.Color(0x000000)}
+            // When specularMap exists, use it as an aoMap-like influence via displacement of roughness
+            {...(specularMap ? { aoMap: specularMap, aoMapIntensity: 0.6 } : {})}
           />
         </mesh>
 
+        {/* Cloud layer */}
+        {cloudsMap && (
+          <mesh ref={cloudRef} rotation={[0, 0, 0]} castShadow receiveShadow>
+            {/* Slightly larger cloud shell with smoother geometry for soft look */}
+            <sphereGeometry args={[globeRadius + 0.03, 96, 96]} />
+            <meshStandardMaterial
+              map={cloudsMap}
+              transparent
+              opacity={0.72}
+              depthWrite={false}
+              alphaTest={0.01}
+              // subtle sheen and smoothness
+              roughness={0.9}
+              metalness={0}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+        )}
+
         {/* Soft halo ring behind the globe for depth (use Standard material to avoid JSX name issue) */}
         <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.7]}>
-          <ringGeometry args={[globeRadius + 0.05, globeRadius + 0.6, 64]} />
-          <meshStandardMaterial color="#06b6d4" transparent opacity={0.08} emissive="#06b6d4" />
+          <ringGeometry args={[globeRadius + 0.08, globeRadius + 0.5, 128]} />
+          <meshStandardMaterial color="#06b6d4" transparent opacity={0.05} emissive="#0ea5a4" emissiveIntensity={0.6} />
         </mesh>
 
         {/* Small marker for Jos North LGA (kept for reference) */}
@@ -312,7 +417,18 @@ export default function Home() {
             aria-hidden="true"
           >
             <Suspense fallback={null}>
-              <Canvas camera={{ position: [0, 0, 7], fov: 60 }} gl={{ alpha: true }}>
+              <Canvas
+                camera={{ position: [0, 0, 7], fov: 60 }}
+                gl={{ alpha: true, antialias: true }}
+                shadows
+                onCreated={(state) => {
+                  try {
+                    state.gl.outputEncoding = THREE.sRGBEncoding;
+                    state.gl.toneMapping = THREE.ACESFilmicToneMapping as any;
+                    state.gl.toneMappingExposure = 1;
+                  } catch (e) { }
+                }}
+              >
                 <Scene realistic />
               </Canvas>
             </Suspense>
@@ -360,7 +476,18 @@ export default function Home() {
           <div className="hidden md:flex w-full md:w-1/2 justify-center items-center relative mt-12 md:mt-0 z-0">
             <div className="w-[320px] h-[320px] md:w-[420px] md:h-[420px] lg:w-[520px] lg:h-[520px] opacity-80 select-none pointer-events-none">
               <Suspense fallback={null}>
-                <Canvas camera={{ position: [0, 0, 7], fov: 60 }} gl={{ alpha: true }}>
+                <Canvas
+                  camera={{ position: [0, 0, 7], fov: 60 }}
+                  gl={{ alpha: true, antialias: true }}
+                  shadows
+                  onCreated={(state) => {
+                    try {
+                      state.gl.outputEncoding = THREE.sRGBEncoding;
+                      state.gl.toneMapping = THREE.ACESFilmicToneMapping as any;
+                      state.gl.toneMappingExposure = 1;
+                    } catch (e) { }
+                  }}
+                >
                   <Scene realistic />
                 </Canvas>
               </Suspense>
