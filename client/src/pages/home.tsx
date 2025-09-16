@@ -592,31 +592,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Welcome Message */}
-      <section className="bg-muted py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6" data-testid="welcome-title">
-            Welcome to <span className="text-gradient">NYSC Jos North</span>
-          </h2>
-          <p className="text-xl text-muted-foreground leading-relaxed mb-8" data-testid="welcome-description">
-            Our platform serves as the central hub for all corps members serving in Jos North Local Government Area. 
-            Stay connected, informed, and engaged with our comprehensive biodata management system.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {features.map((feature, i) => (
-              <Card key={feature.title} className="p-4 h-full card transform transition-shadow hover:shadow-lg" style={{ animationName: 'fadeUp', animationDuration: '420ms', animationDelay: `${i * 80}ms`, animationFillMode: 'both' }}>
-                <CardContent className="p-4 text-center">
-                  <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center bg-primary/10">
-                    <feature.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-1 text-lg">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+  {/* Welcome and Features sections removed per request */}
 
   {/* Dev Section: developer bios and contact links */}
       <section className="py-20 bg-gradient-to-b from-white/6 to-transparent">
