@@ -680,6 +680,68 @@ export default function Home() {
         </div>
       </section>
 
+      {/* View all devs button */}
+      <section className="py-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Link href="/developers">
+            <Button size="lg" className="px-6 py-3 rounded-full bg-white/6 text-white hover:bg-white/10 shadow">View all developers</Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* Resources Section */}
+      <section className="py-16 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h3 className="text-2xl font-bold text-foreground mb-4">Resources</h3>
+          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">Browse available resources and documentation curated for corps members.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { title: 'Guides', desc: 'Registration and mobilisation guides', href: '/resources' },
+              { title: 'Event Kits', desc: 'Materials for running events', href: '/resources' },
+              { title: 'Forms', desc: 'Downloadable forms and templates', href: '/resources' },
+            ].map((r) => (
+              <Card key={r.title} className="p-4 h-full card">
+                <CardContent className="p-4">
+                  <h4 className="font-semibold text-foreground mb-1">{r.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-4">{r.desc}</p>
+                  <div className="text-right">
+                    <Link href={r.href} className="text-sm text-foreground/80 hover:text-foreground">Explore</Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Excos Section */}
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h3 className="text-2xl font-bold text-foreground mb-4">Executive Committee</h3>
+          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">Meet the branch executive committee members leading events and outreach.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { name: 'Tunde', post: 'Chairperson' },
+              { name: 'Ruth', post: 'Secretary' },
+              { name: 'Bala', post: 'Treasurer' }
+            ].map((e) => (
+              <Card key={e.name} className="p-4 h-full card">
+                <CardContent className="p-4 text-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 mx-auto flex items-center justify-center font-semibold text-lg mb-3">{e.name.charAt(0)}</div>
+                  <h4 className="font-semibold text-foreground mb-1">{e.name}</h4>
+                  <p className="text-sm text-muted-foreground">{e.post}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-8">
+            <Link href="/excos">
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground">View full committee</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
