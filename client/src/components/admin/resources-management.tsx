@@ -194,8 +194,8 @@ export default function ResourcesManagement() {
     <div className="p-8" data-testid="resources-management">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Manage Resources</h1>
-          <p className="text-muted-foreground">Upload and organize platform resources</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Manage Resources</h1>
+          <p className="text-emerald-100">Upload and organize platform resources</p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -356,27 +356,27 @@ export default function ResourcesManagement() {
           <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
             <FileText className="w-8 h-8 text-primary" />
           </div>
-          <h3 className="text-lg font-bold mb-2">Documents</h3>
-          <p className="text-2xl font-bold text-primary mb-1">{resourceStats.documents}</p>
-          <p className="text-sm text-muted-foreground">Total files</p>
+          <h3 className="text-lg font-bold mb-2 text-white">Documents</h3>
+          <p className="text-2xl font-bold text-white mb-1">{resourceStats.documents}</p>
+          <p className="text-sm text-emerald-100">Total files</p>
         </Card>
 
         <Card className="p-6 text-center shadow-lg hover-lift" data-testid="videos-stats">
           <div className="w-16 h-16 bg-secondary/30 rounded-xl flex items-center justify-center mx-auto mb-4">
             <Video className="w-8 h-8 text-secondary-foreground" />
           </div>
-          <h3 className="text-lg font-bold mb-2">Videos</h3>
-          <p className="text-2xl font-bold text-secondary-foreground mb-1">{resourceStats.videos}</p>
-          <p className="text-sm text-muted-foreground">Training videos</p>
+          <h3 className="text-lg font-bold mb-2 text-white">Videos</h3>
+          <p className="text-2xl font-bold text-white mb-1">{resourceStats.videos}</p>
+          <p className="text-sm text-emerald-100">Training videos</p>
         </Card>
 
         <Card className="p-6 text-center shadow-lg hover-lift" data-testid="images-stats">
           <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
             <ImageIcon className="w-8 h-8 text-accent-foreground" />
           </div>
-          <h3 className="text-lg font-bold mb-2">Images</h3>
-          <p className="text-2xl font-bold text-accent-foreground mb-1">{resourceStats.images}</p>
-          <p className="text-sm text-muted-foreground">Gallery items</p>
+          <h3 className="text-lg font-bold mb-2 text-white">Images</h3>
+          <p className="text-2xl font-bold text-white mb-1">{resourceStats.images}</p>
+          <p className="text-sm text-emerald-100">Gallery items</p>
         </Card>
       </div>
 
@@ -413,10 +413,10 @@ export default function ResourcesManagement() {
 
       {/* Resources List */}
       {filteredResources.length === 0 ? (
-        <div className="text-center py-20" data-testid="no-resources">
-          <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-foreground mb-2">No Resources Found</h3>
-          <p className="text-muted-foreground">
+          <div className="text-center py-20" data-testid="no-resources">
+          <FileText className="w-16 h-16 text-emerald-100 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-white mb-2">No Resources Found</h3>
+          <p className="text-emerald-100">
             {searchQuery || selectedCategory !== "All Categories" 
               ? "Try adjusting your search or filter criteria." 
               : "Start by uploading your first resource."}
@@ -447,7 +447,7 @@ export default function ResourcesManagement() {
                     <h3 className="font-medium" data-testid={`resource-title-${resource.id}`}>
                       {resource.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground" data-testid={`resource-meta-${resource.id}`}>
+                    <p className="text-sm text-emerald-100" data-testid={`resource-meta-${resource.id}`}>
                       {resource.fileType} {resource.fileSize && `• ${resource.fileSize}`} • {resource.createdAt ? new Date(resource.createdAt).toLocaleDateString() : 'Unknown date'}
                     </p>
                   </div>

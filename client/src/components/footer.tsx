@@ -89,7 +89,7 @@ export default function Footer() {
             © 2024 NYSC Jos North. All rights reserved.
           </p>
           <p className="text-white/60 text-sm mt-4 md:mt-0" data-testid="powered-by">
-            Powered by NYSC Digital Platform
+            Powered by Jos North ICT CDS
           </p>
         </div>
       </div>

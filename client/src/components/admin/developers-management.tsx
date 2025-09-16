@@ -64,8 +64,8 @@ export default function DevelopersManagement() {
     <div className="p-8" data-testid="developers-management">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Manage Developers</h1>
-          <p className="text-muted-foreground">Manage platform development team members</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Manage Developers</h1>
+          <p className="text-emerald-100">Manage platform development team members</p>
         </div>
         <Button className="bg-primary text-primary-foreground" data-testid="button-add-developer">
           <Plus className="w-4 h-4 mr-2" />
@@ -75,9 +75,9 @@ export default function DevelopersManagement() {
 
       {!developers || developers.length === 0 ? (
         <div className="text-center py-20" data-testid="no-developers">
-          <Code className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-foreground mb-2">No Developers Found</h3>
-          <p className="text-muted-foreground">Start by adding your first development team member.</p>
+          <Code className="w-16 h-16 text-emerald-100 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-white mb-2">No Developers Found</h3>
+          <p className="text-emerald-100">Start by adding your first development team member.</p>
         </div>
       ) : (
         <Card className="shadow-lg overflow-hidden" data-testid="developers-table">
@@ -118,7 +118,7 @@ export default function DevelopersManagement() {
                             <p className="font-medium" data-testid={`developer-name-${developer.id}`}>
                               {developer.name}
                             </p>
-                            <p className="text-sm text-muted-foreground" data-testid={`developer-email-${developer.id}`}>
+                            <p className="text-sm text-emerald-100" data-testid={`developer-email-${developer.id}`}>
                               {developer.email}
                             </p>
                           </div>

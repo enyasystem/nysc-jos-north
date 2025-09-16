@@ -186,6 +186,37 @@
   background: linear-gradient(180deg, #006600 0%, #004d00 100%);
 }
 
+/* Admin-specific overrides for better contrast on deep sea green */
+.admin-root {
+  --background: #014f43;
+  --foreground: #ffffff;
+  --card: rgba(255,255,255,0.02);
+  --card-foreground: #f8fafc;
+  --muted: rgba(255,255,255,0.03);
+  --muted-foreground: rgba(255,255,255,0.6);
+  --border: rgba(255,255,255,0.06);
+}
+
+.admin-root .admin-sidebar {
+  background: linear-gradient(180deg, #013a33 0%, #01332d 100%);
+  color: #e6fff6;
+}
+
+.admin-root .text-foreground,
+.admin-root .text-muted-foreground,
+.admin-root .text-black,
+.admin-root h1,
+.admin-root h2,
+.admin-root h3,
+.admin-root p {
+  color: #eafaf6 !important;
+}
+
+.admin-root .glass-effect {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
 /* Card hover effects */
 .card-hover {
   transition: all 0.3s ease;

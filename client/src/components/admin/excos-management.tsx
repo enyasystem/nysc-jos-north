@@ -63,8 +63,8 @@ export default function ExcosManagement() {
     <div className="p-8" data-testid="excos-management">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Manage Excos</h1>
-          <p className="text-muted-foreground">Add, edit, or remove executive members</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Manage Excos</h1>
+          <p className="text-emerald-100">Add, edit, or remove executive members</p>
         </div>
         <Button className="bg-primary text-primary-foreground" data-testid="button-add-exco">
           <Plus className="w-4 h-4 mr-2" />
@@ -74,9 +74,9 @@ export default function ExcosManagement() {
 
       {!excos || excos.length === 0 ? (
         <div className="text-center py-20" data-testid="no-excos">
-          <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-foreground mb-2">No Excos Found</h3>
-          <p className="text-muted-foreground">Start by adding your first executive member.</p>
+          <Users className="w-16 h-16 text-emerald-100 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-white mb-2">No Excos Found</h3>
+          <p className="text-emerald-100">Start by adding your first executive member.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -98,7 +98,7 @@ export default function ExcosManagement() {
                   <p className="text-primary font-medium" data-testid={`exco-position-${exco.id}`}>
                     {exco.position}
                   </p>
-                  <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+                  <div className="mt-2 space-y-1 text-sm text-emerald-100">
                     {exco.email && (
                       <div className="flex items-center justify-center space-x-1" data-testid={`exco-email-${exco.id}`}>
                         <Mail className="w-3 h-3" />

@@ -36,34 +36,34 @@ export function DashboardAnalytics({ className }: AnalyticsProps) {
     {
       title: "Total Events",
       value: events?.length || 0,
-      change: `+${events?.filter(e => e.status === "published").length || 0} published`,
+      change: `+${events?.filter((e) => e.status === "published").length || 0} published`,
       icon: Calendar,
-      color: "from-primary to-primary/80",
-      trend: "up"
+      color: "emerald",
+      trend: "up",
     },
     {
       title: "Active Excos",
-      value: excos?.filter(e => e.isActive).length || 0,
+      value: excos?.filter((e) => e.isActive).length || 0,
       change: `${excos?.length || 0} total members`,
       icon: Users,
-      color: "from-blue-500 to-blue-600",
-      trend: "up"
+      color: "emerald",
+      trend: "up",
     },
     {
       title: "Resources",
       value: resources?.length || 0,
-      change: `${resources?.filter(r => r.category === "Documents").length || 0} documents`,
+      change: `${resources?.filter((r) => r.category === "Documents").length || 0} documents`,
       icon: FileText,
-      color: "from-green-500 to-green-600",
-      trend: "up"
+      color: "emerald",
+      trend: "up",
     },
     {
       title: "Dev Team",
-      value: developers?.filter(d => d.status === "active").length || 0,
+      value: developers?.filter((d) => d.status === "active").length || 0,
       change: `${developers?.length || 0} total developers`,
       icon: Activity,
-      color: "from-purple-500 to-purple-600",
-      trend: "up"
+      color: "emerald",
+      trend: "up",
     },
   ];
 
@@ -78,71 +78,69 @@ export function DashboardAnalytics({ className }: AnalyticsProps) {
     <div className={className} data-testid="dashboard-analytics">
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat, index) => (
-          <Card 
-            key={stat.title} 
-            className="overflow-hidden shadow-lg hover-lift border-0 bg-gradient-to-br"
-            style={{
-              background: `linear-gradient(135deg, ${stat.color.split(' ')[1]}, ${stat.color.split(' ')[3]})`
-            }}
+        {stats.map((stat) => (
+          <Card
+            key={stat.title}
+            className="overflow-hidden shadow-lg hover-lift border-0 bg-[rgba(255,255,255,0.04)]"
             data-testid={`stat-card-${stat.title.toLowerCase().replace(/\s+/g, '-')}`}
           >
             <CardContent className="p-6 text-white">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                  <stat.icon className="w-6 h-6" />
+                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                  <stat.icon className="w-6 h-6 text-emerald-300" />
                 </div>
-                <Badge 
-                  variant="secondary" 
-                  className="bg-white/20 text-white border-white/20"
-                >
-                  <TrendingUp className="w-3 h-3 mr-1" />
+                <Badge variant="secondary" className="bg-white/10 text-emerald-200 border-transparent">
+                  <TrendingUp className="w-3 h-3 mr-1 text-emerald-300" />
                   {stat.trend}
                 </Badge>
               </div>
-              <h3 className="text-3xl font-bold mb-2 animate-fade-in">{stat.value}</h3>
-              <p className="text-white/80 text-sm">{stat.title}</p>
-              <div className="mt-4 text-sm text-white/60">
-                {stat.change}
-              </div>
+              <h3 className="text-3xl font-bold mb-2 animate-fade-in text-white">{stat.value}</h3>
+              <p className="text-white/90 text-sm font-medium">{stat.title}</p>
+              <div className="mt-4 text-sm text-white/70">{stat.change}</div>
             </CardContent>
           </Card>
         ))}
       </div>
 
       {/* Recent Activity */}
-      <Card className="shadow-lg" data-testid="recent-activity-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Activity className="w-5 h-5 text-primary" />
-            Recent Activity
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {recentActivity.map((activity, index) => (
-              <div 
-                key={index}
-                className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
-                data-testid={`activity-${index}`}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className={`w-2 h-2 rounded-full ${
-                    activity.type === "event" ? "bg-primary" :
-                    activity.type === "resource" ? "bg-green-500" :
-                    activity.type === "exco" ? "bg-blue-500" : "bg-purple-500"
-                  }`} />
-                  <div>
-                    <p className="text-sm font-medium">{activity.action}</p>
-                    <p className="text-xs text-muted-foreground">{activity.item}</p>
+        <Card className="shadow-lg bg-[rgba(255,255,255,0.02)] text-white" data-testid="recent-activity-card">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="w-5 h-5 text-emerald-300" />
+              Recent Activity
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {recentActivity.map((activity, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3 rounded-lg bg-white/3 hover:bg-white/6 transition-colors"
+                  data-testid={`activity-${index}`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div
+                      className={`w-2 h-2 rounded-full ${
+                        activity.type === "event"
+                          ? "bg-emerald-300"
+                          : activity.type === "resource"
+                          ? "bg-emerald-300"
+                          : activity.type === "exco"
+                          ? "bg-emerald-300"
+                          : "bg-emerald-300"
+                      }`}
+                    />
+                    <div>
+                      <p className="text-sm font-medium text-white">{activity.action}</p>
+                      <p className="text-xs text-emerald-100">{activity.item}</p>
+                    </div>
                   </div>
+                  <span className="text-xs text-emerald-100">{activity.time}</span>
                 </div>
-                <span className="text-xs text-muted-foreground">{activity.time}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
     </div>
   );
 }

@@ -195,8 +195,8 @@ export default function EventsManagement() {
     <div className="p-8" data-testid="events-management">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Manage Events</h1>
-          <p className="text-muted-foreground">Create, edit, and manage platform events</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Manage Events</h1>
+          <p className="text-emerald-100">Create, edit, and manage platform events</p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -408,9 +408,9 @@ export default function EventsManagement() {
       {/* Events List */}
       {filteredEvents.length === 0 ? (
         <div className="text-center py-20" data-testid="no-events">
-          <Calendar className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-foreground mb-2">No Events Found</h3>
-          <p className="text-muted-foreground">
+          <Calendar className="w-16 h-16 text-emerald-100 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-white mb-2">No Events Found</h3>
+          <p className="text-emerald-100">
             {searchQuery || selectedCategory !== "All Categories" 
               ? "Try adjusting your search or filter criteria." 
               : "Start by creating your first event."}
@@ -448,10 +448,10 @@ export default function EventsManagement() {
                           {event.status}
                         </Badge>
                       </div>
-                      <p className="text-muted-foreground mb-3" data-testid={`event-description-${event.id}`}>
+                      <p className="text-emerald-100 mb-3" data-testid={`event-description-${event.id}`}>
                         {event.description}
                       </p>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-4 text-sm text-emerald-100">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           <span data-testid={`event-date-${event.id}`}>

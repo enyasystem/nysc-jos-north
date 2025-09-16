@@ -129,8 +129,8 @@ export default function UiSettings() {
   return (
     <div className="p-8" data-testid="ui-settings">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">UI Settings</h1>
-        <p className="text-muted-foreground">Customize platform appearance and branding</p>
+        <h1 className="text-3xl font-bold text-white mb-2">UI Settings</h1>
+        <p className="text-emerald-100">Customize platform appearance and branding</p>
       </div>
 
       <Form {...form}>
@@ -269,8 +269,8 @@ export default function UiSettings() {
                   <div>
                     <label className="block text-sm font-medium mb-2">Upload New Logo</label>
                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-                      <Upload className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                      <p className="text-muted-foreground mb-2">Drag & drop or click to upload</p>
+                      <Upload className="w-12 h-12 mx-auto text-emerald-100 mb-4" />
+                      <p className="text-emerald-100 mb-2">Drag & drop or click to upload</p>
                       <Button type="button" variant="outline" data-testid="button-choose-file">
                         Choose File
                       </Button>
@@ -396,17 +396,17 @@ export default function UiSettings() {
                   </Button>
                   <Button 
                     style={{ backgroundColor: previewColors.accent }}
-                    className="text-black"
+                    className="text-white"
                     data-testid="preview-accent-button"
                   >
                     Accent Button
                   </Button>
                 </div>
-                <div className="p-4 border border-border rounded-lg">
+                <div className="p-4 border border-border rounded-lg bg-white/3 text-white">
                   <h4 className="font-semibold mb-2" style={{ color: previewColors.primary }}>
                     Sample Heading with Primary Color
                   </h4>
-                  <p className="text-muted-foreground">
+                  <p className="text-emerald-100">
                     This is how your content will look with the selected color scheme.
                   </p>
                 </div>
