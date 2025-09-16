@@ -7,8 +7,9 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { useCallback } from "react";
 import type { Engine } from "tsparticles-engine";
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import type { Texture } from 'three';
 import { OrbitControls, Environment, ContactShadows, MeshTransmissionMaterial } from '@react-three/drei';
 // Postprocessing removed temporarily due to runtime error in dev environment
 // import { EffectComposer, Bloom, DepthOfField } from '@react-three/postprocessing';
@@ -36,11 +37,78 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
   };
 
   // Example: Jos (approx) latitude/longitude
-  const globeRadius = 1.75;
+  // Increase globe size for better visibility
+  const globeRadius = 2.2;
   const josPos = useMemo(() => latLonToCartesian(9.8965, 8.8583, globeRadius), [globeRadius]);
 
-  // Load an Earth texture (falls back to a public CDN)
-  const earthTexture = useLoader(THREE.TextureLoader, 'https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg');
+  // Load Earth textures with error handling – fall back to null if a texture fails to load
+  const [earthTexture, setEarthTexture] = useState<any | null>(null);
+  const [normalMap, setNormalMap] = useState<any | null>(null);
+  const [bumpMap, setBumpMap] = useState<any | null>(null);
+  const [specularMap, setSpecularMap] = useState<any | null>(null);
+
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    const urls = {
+      earth: 'https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg',
+      normal: 'https://threejs.org/examples/textures/earth_normalmap_2048.jpg',
+      bump: 'https://threejs.org/examples/textures/earthbump1k.jpg',
+      spec: 'https://threejs.org/examples/textures/earthspec1k.jpg',
+    };
+
+    loader.load(urls.earth,
+      (tex: Texture) => setEarthTexture(tex),
+      undefined,
+      (err: any) => { console.warn('Failed to load earth texture', err); setEarthTexture(null); }
+    );
+
+    loader.load(urls.normal,
+      (tex: Texture) => setNormalMap(tex),
+      undefined,
+      (err: any) => { console.warn('Failed to load normal map', err); setNormalMap(null); }
+    );
+
+    loader.load(urls.bump,
+      (tex: Texture) => setBumpMap(tex),
+      undefined,
+      (err: any) => { console.warn('Failed to load bump map', err); setBumpMap(null); }
+    );
+
+    loader.load(urls.spec,
+      (tex: Texture) => setSpecularMap(tex),
+      undefined,
+      (err: any) => { console.warn('Failed to load specular map', err); setSpecularMap(null); }
+    );
+
+    // Load a premium SVG icon as data URL and apply it to the plane mesh's material
+    try {
+      const badgeSvg = encodeURIComponent(`
+        <svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024' viewBox='0 0 200 200'>
+          <defs>
+            <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+              <stop offset='0%' stop-color='#06b6d4'/>
+              <stop offset='100%' stop-color='#7c3aed'/>
+            </linearGradient>
+            <filter id='f' x='-50%' y='-50%' width='200%' height='200%'>
+              <feDropShadow dx='0' dy='6' stdDeviation='10' flood-color='#000' flood-opacity='0.25' />
+            </filter>
+          </defs>
+          <g filter='url(#f)'>
+            <rect x='10' y='10' width='180' height='180' rx='24' fill='url(#g)' />
+            <circle cx='100' cy='80' r='34' fill='rgba(255,255,255,0.14)' />
+            <text x='100' y='92' font-family='Arial, Helvetica, sans-serif' font-size='36' fill='#fff' font-weight='700' text-anchor='middle'>NYSC</text>
+            <text x='100' y='132' font-family='Arial, Helvetica, sans-serif' font-size='14' fill='rgba(255,255,255,0.9)' text-anchor='middle'>Jos North</text>
+          </g>
+        </svg>
+      `);
+      const svgDataUrl = `data:image/svg+xml;charset=utf-8,${badgeSvg}`;
+      loader.load(svgDataUrl, (tex: Texture) => {
+        setEarthTexture((prev) => prev || tex);
+      }, undefined, (err: any) => console.warn('Failed to load badge SVG texture', err));
+    } catch (e) {
+      console.warn('Failed to create SVG data URL', e);
+    }
+  }, []);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -53,6 +121,11 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
       const pulse = 1 + Math.sin(t * 3) * 0.08;
       markerRef.current.scale.set(pulse, pulse, pulse);
     }
+    // Gentle bobbing for the badge to add polish
+    if (globeRef.current) {
+      const bob = Math.sin(t * 1.2) * 0.06;
+      globeRef.current.position.y = bob;
+    }
   });
   return (
     <>
@@ -61,18 +134,26 @@ function Scene({ realistic = false }: { realistic?: boolean }) {
   {/* Camera shake removed to avoid view drifting in smaller hero placements */}
       {/* Rotating globe with a subtle cloud layer and a marker for Jos North */}
       <group ref={globeGroupRef}>
-        <mesh ref={globeRef} castShadow receiveShadow>
+        {/* 3D textured globe */}
+        <mesh ref={globeRef} rotation={[0, 0, 0]} castShadow receiveShadow>
           <sphereGeometry args={[globeRadius, 64, 64]} />
-          <meshStandardMaterial map={earthTexture} roughness={0.9} metalness={0.02} />
+          {/* Prefer Phong for specular map support; fall back to basic props when maps are absent */}
+          <meshPhongMaterial
+            {...(earthTexture ? { map: earthTexture } : {})}
+            {...(normalMap ? { normalMap } : {})}
+            {...(bumpMap ? { bumpMap } : {})}
+            {...(specularMap ? { specularMap } : {})}
+            shininess={18}
+          />
         </mesh>
 
-        {/* Cloud layer */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[globeRadius + 0.02, 64, 64]} />
-          <meshStandardMaterial color="#ffffff" opacity={0.06} transparent />
+        {/* Soft halo ring behind the globe for depth (use Standard material to avoid JSX name issue) */}
+        <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.7]}>
+          <ringGeometry args={[globeRadius + 0.05, globeRadius + 0.6, 64]} />
+          <meshStandardMaterial color="#06b6d4" transparent opacity={0.08} emissive="#06b6d4" />
         </mesh>
 
-        {/* Small marker for Jos North LGA */}
+        {/* Small marker for Jos North LGA (kept for reference) */}
         <mesh ref={markerRef} position={josPos}>
           <sphereGeometry args={[0.06, 12, 12]} />
           <meshStandardMaterial color="#facc15" emissive="#facc15" emissiveIntensity={0.9} />
