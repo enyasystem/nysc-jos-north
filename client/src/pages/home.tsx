@@ -18,6 +18,82 @@ type Mesh = any;
 type Group = any;
 import { Suspense } from 'react';
 
+// Simple, lightweight typewriter text component
+function TypewriterText({ text, className = '' }: { text: string; className?: string }) {
+  const [display, setDisplay] = useState('');
+  const [index, setIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    let timer: any;
+    const typingSpeed = 220; // ms per char
+    const deletingSpeed = 120; // ms per char
+    const pause = 2200; // ms after full text
+
+    // Always keep display in sync with index first
+    setDisplay(text.slice(0, index));
+
+    if (!deleting) {
+      if (index < text.length) {
+        // schedule next character
+        timer = setTimeout(() => setIndex((i) => i + 1), typingSpeed);
+      } else if (index === text.length) {
+        // fully typed; pause then start deleting
+        timer = setTimeout(() => setDeleting(true), pause);
+      }
+    } else {
+      if (index > 0) {
+        // schedule deletion
+        timer = setTimeout(() => setIndex((i) => i - 1), deletingSpeed);
+      } else {
+        // finished deleting -> start typing again
+        setDeleting(false);
+      }
+    }
+
+    return () => clearTimeout(timer);
+  }, [index, deleting, text]);
+
+  return (
+    <span className={`${className} inline-block typewriter-glow`} aria-live="polite">
+      {display}
+    </span>
+  );
+}
+
+// Local styles for glow and (legacy) blink keyframes
+const styleEl = (
+  <style>{`
+    @keyframes blink { 0%,49% { opacity: 1 } 50%,100% { opacity: 0 } }
+    .animate-blink { animation: blink 1s steps(2,start) infinite }
+
+    /* Subtle pulsing glow for the hero typewriter text */
+    .typewriter-glow {
+      color: #ffffff;
+      /* layered text-shadow for soft glow */
+      text-shadow: 0 0 6px rgba(255,255,255,0.06), 0 0 18px rgba(16,185,129,0.04);
+      transition: text-shadow 220ms ease-in-out, transform 220ms ease-in-out;
+      will-change: text-shadow, transform;
+      animation: glowPulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        text-shadow: 0 0 4px rgba(255,255,255,0.04), 0 0 10px rgba(16,185,129,0.02);
+        transform: translateY(0);
+      }
+      50% {
+        text-shadow: 0 0 12px rgba(255,255,255,0.12), 0 0 28px rgba(16,185,129,0.08);
+        transform: translateY(-2px);
+      }
+      100% {
+        text-shadow: 0 0 4px rgba(255,255,255,0.04), 0 0 10px rgba(16,185,129,0.02);
+        transform: translateY(0);
+      }
+    }
+  `}</style>
+);
+
 // --- 3D Scene Component for Realism ---
 function Scene({ realistic = false }: { realistic?: boolean }) {
   // Rotating globe refs
@@ -392,6 +468,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen" data-testid="home-page">
+      {styleEl}
       {lastError && (
         <div className="fixed inset-4 z-50 bg-black/70 flex items-start justify-center p-8">
           <div className="max-w-3xl w-full bg-white rounded p-6 overflow-auto">
@@ -440,9 +517,7 @@ export default function Home() {
                 <Users className="w-14 h-14 text-white drop-shadow-lg" />
               </div>
               <h1 className="text-6xl md:text-8xl font-extrabold mb-6 tracking-tight drop-shadow-lg" data-testid="hero-title">
-                <span className="bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-yellow-300 bg-clip-text text-transparent animate-gradient-x">
-                  NYSC Jos North
-                </span>
+                <TypewriterText text="NYSC Jos North" className="text-white" />
               </h1>
               <p className="text-2xl md:text-3xl font-light mb-10 max-w-3xl mx-auto md:mx-0 text-white/90 animate-fade-in" data-testid="hero-description">
                 Official Biodata Management Platform for National Youth Service Corps Jos North Local Government
