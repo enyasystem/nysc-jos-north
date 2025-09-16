@@ -742,18 +742,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-3xl font-bold text-foreground mb-4">Ready to get started?</h3>
-          <p className="text-muted-foreground mb-8">Create an account, browse resources, and join events — all in one place.</p>
-          <div className="flex justify-center">
-            <Link href="/register">
-              <Button size="lg" className="px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-400 shadow-lg">Create Account</Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+  {/* CTA Section removed per request */}
 
       {/* Premium Animations: keyframes used by testimonials */}
       <style>{`@keyframes fadeUp { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: translateY(0) } }`}</style>
