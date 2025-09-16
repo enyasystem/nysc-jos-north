@@ -628,7 +628,14 @@ export default function Home() {
               >
                 <CardContent className="bg-transparent p-0 flex flex-col h-full justify-between">
                   <div>
-                    <div className="w-14 h-14 rounded-full bg-primary/10 text-foreground/90 flex items-center justify-center font-semibold text-lg mb-4">{dev.name.charAt(0)}</div>
+                    <div className="w-14 h-14 rounded-full overflow-hidden mb-4 mx-auto md:mx-0">
+                      <img
+                        src={dev.image ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(dev.name)}&background=014f43&color=ffffff&size=256&rounded=true`}
+                        alt={`${dev.name} avatar`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
                     <h3 className="text-lg font-semibold text-foreground mb-1">{dev.name}</h3>
                     <p className="text-sm text-muted-foreground mb-3">{dev.role}</p>
                     <p className="text-sm text-foreground/90 mb-4">{dev.bio}</p>
